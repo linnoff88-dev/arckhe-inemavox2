@@ -1,0 +1,77 @@
+# inemaVOX - Backend API com GPU
+# Neste modo, o backend E o pipeline rodam dentro do mesmo container
+# com acesso direto a GPU via PyTorch NVIDIA
+FROM nvcr.io/nvidia/pytorch:25.01-py3
+
+WORKDIR /app
+
+# Dependencias de sistema
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ffmpeg \
+    rubberband-cli \
+    && rm -rf /var/lib/apt/lists/*
+
+# Salvar versao do PyTorch NVIDIA
+RUN TORCH_VER=$(python -c "import torch; print(torch.__version__)") && \
+    echo "PyTorch NVIDIA: $TORCH_VER"
+
+# Dependencias que NAO dependem de torch
+RUN pip install --no-cache-dir \
+    edge-tts>=6.1.0 \
+    sentencepiece>=0.1.99 \
+    protobuf>=3.20.0 \
+    sacremoses>=0.0.53 \
+    httpx>=0.24.0 \
+    scipy>=1.10.0 \
+    soundfile>=0.12.0 \
+    yt-dlp>=2023.0.0 \
+    Pillow>=10.0.0 \
+    librosa>=0.10.0 \
+    fastapi>=0.100.0 \
+    "uvicorn[standard]>=0.22.0" \
+    websockets>=11.0 \
+    aiosqlite>=0.19.0 \
+    python-multipart>=0.0.6
+
+# Dependencias que dependem de torch - sem puxar torch CPU
+RUN pip install --no-cache-dir --no-deps \
+    faster-whisper ctranslate2 tokenizers huggingface-hub
+
+RUN pip install --no-cache-dir av pyyaml onnxruntime
+
+RUN pip install --no-cache-dir --no-deps \
+    bark encodec funcy
+
+RUN pip install --no-cache-dir --no-deps transformers safetensors accelerate
+
+# OpenAI Whisper (usa PyTorch CUDA diretamente - fallback para ARM64 onde CTranslate2 nao tem CUDA)
+RUN pip install --no-cache-dir --no-deps openai-whisper
+RUN pip install --no-cache-dir tiktoken more-itertools
+
+# NeMo ASR (NVIDIA Parakeet) - sem puxar torch para preservar PyTorch NVIDIA
+RUN pip install --no-cache-dir --no-deps nemo_toolkit
+RUN pip install --no-cache-dir \
+    hydra-core omegaconf pytorch-lightning \
+    braceexpand editdistance jiwer lhotse \
+    webdataset cytoolz
+
+# Verificar PyTorch NVIDIA preservado
+RUN python -c "\
+import torch; \
+v = torch.__version__; \
+assert '+cpu' not in v, f'PyTorch CPU detectado: {v}'; \
+print(f'OK: PyTorch {v}'); \
+"
+
+# Copiar codigo
+COPY dublar_pro_v5.py .
+COPY api/ ./api/
+
+# Diretorios
+RUN mkdir -p /app/dub_work /app/dublado /app/jobs
+
+EXPOSE 8000
+
+# No modo docker-compose, PYTHON_BIN=python usa o Python do container (com CUDA)
+# O job_manager roda o pipeline como subprocess usando este mesmo Python
+CMD ["uvicorn", "api.server:app", "--host", "0.0.0.0", "--port", "8000"]
