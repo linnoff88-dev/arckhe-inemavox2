@@ -41,10 +41,10 @@ fi
 echo "✅ Download concluído!"
 echo ""
 
-# 2. Obter duração do vídeo
+# 2. Obter duraçêo do vídeo
 DURACAO=$(ffprobe -v error -show_entries format=duration \
           -of default=noprint_wrappers=1:nokey=1 "video_completo.mp4")
-echo "⏱️  Duração do vídeo: $(printf '%02d:%02d:%02d\n' $((${DURACAO%.*}/3600)) $((${DURACAO%.*}%3600/60)) $((${DURACAO%.*}%60)))"
+echo "⏱️  Duraçêo do vídeo: $(printf '%02d:%02d:%02d\n' $((${DURACAO%.*}/3600)) $((${DURACAO%.*}%3600/60)) $((${DURACAO%.*}%60)))"
 echo ""
 
 # 3. Cortar em 4 partes

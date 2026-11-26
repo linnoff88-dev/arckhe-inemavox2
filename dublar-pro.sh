@@ -1,5 +1,5 @@
 #!/bin/bash
-# dublar-pro.sh - inemaVOX: Script de execução do pipeline
+# dublar-pro.sh - inemaVOX: Script de execuçêo do pipeline
 # Detecta automaticamente GPU/CPU e configura ambiente
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -18,7 +18,7 @@ echo -e "${BLUE}============================================${NC}"
 
 # Verificar Python
 if ! command -v python &> /dev/null && ! command -v python3 &> /dev/null; then
-    echo -e "${RED}[ERRO] Python não encontrado${NC}"
+    echo -e "${RED}[ERRO] Python nêo encontrado${NC}"
     exit 1
 fi
 
@@ -33,7 +33,7 @@ echo -e "${GREEN}[OK] Python: $($PYTHON_CMD --version)${NC}"
 
 # Verificar FFmpeg
 if ! command -v ffmpeg &> /dev/null; then
-    echo -e "${RED}[ERRO] FFmpeg não encontrado${NC}"
+    echo -e "${RED}[ERRO] FFmpeg nêo encontrado${NC}"
     echo -e "${YELLOW}Instale com: sudo apt install ffmpeg${NC}"
     exit 1
 fi
@@ -54,7 +54,7 @@ if command -v nvidia-smi &> /dev/null; then
 fi
 
 if [ $GPU_AVAILABLE -eq 0 ]; then
-    echo -e "  ${YELLOW}GPU: Não detectada (usando CPU)${NC}"
+    echo -e "  ${YELLOW}GPU: Nêo detectada (usando CPU)${NC}"
 fi
 
 # Verificar RAM
@@ -65,7 +65,7 @@ echo -e "  RAM: ${RAM_GB}GB"
 if command -v rubberband &> /dev/null; then
     echo -e "  ${GREEN}Rubberband: Disponível${NC}"
 else
-    echo -e "  ${YELLOW}Rubberband: Não instalado (opcional)${NC}"
+    echo -e "  ${YELLOW}Rubberband: Nêo instalado (opcional)${NC}"
 fi
 
 echo ""

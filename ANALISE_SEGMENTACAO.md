@@ -1,8 +1,8 @@
-# Análise de Segmentação do Whisper
+# Análise de Segmentaçêo do Whisper
 
 ## Problema Identificado
 
-O Whisper segmenta o áudio por **tempo** (~6 segundos), não por **frases completas**.
+O Whisper segmenta o áudio por **tempo** (~6 segundos), nêo por **frases completas**.
 Isso causa cortes no meio de frases, resultando em dublagem que parece "pular de assunto".
 
 ## Estatísticas do Problema
@@ -10,8 +10,8 @@ Isso causa cortes no meio de frases, resultando em dublagem que parece "pular de
 | Métrica | Valor | Impacto |
 |---------|-------|---------|
 | Segmentos que terminam com vírgula | 25 (10.3%) | Frase continua no próximo segmento |
-| Segmentos sem pontuação final | 83 (34.2%) | Frase incompleta |
-| Total de segmentos afetados | ~35% | Perda de contexto na tradução |
+| Segmentos sem pontuaçêo final | 83 (34.2%) | Frase incompleta |
+| Total de segmentos afetados | ~35% | Perda de contexto na traduçêo |
 
 ## Exemplo do Problema
 
@@ -34,14 +34,14 @@ Quando uma frase é mais longa que 6 segundos, ela é cortada no meio.
 ## Soluções Avaliadas
 
 ### 1. Juntar Segmentos (IMPLEMENTADA)
-- **O que faz:** Detecta segmentos que terminam com vírgula/sem pontuação e junta com o próximo
+- **O que faz:** Detecta segmentos que terminam com vírgula/sem pontuaçêo e junta com o próximo
 - **Complexidade:** Baixa
 - **Tempo extra:** 0%
 - **Qualidade:** Boa (resolve ~80% dos casos)
 
 ### 2. Re-segmentar por Frase
-- **O que faz:** Ignora segmentação do Whisper, cria novos segmentos por pontuação
-- **Problema:** Não sabe o tempo exato de cada frase sem word_timestamps
+- **O que faz:** Ignora segmentaçêo do Whisper, cria novos segmentos por pontuaçêo
+- **Problema:** Nêo sabe o tempo exato de cada frase sem word_timestamps
 - **Complexidade:** Média
 - **Qualidade:** Muito boa (se usar estimativa por chars)
 
@@ -56,14 +56,14 @@ Quando uma frase é mais longa que 6 segundos, ela é cortada no meio.
 - **Complexidade:** Alta (precisa biblioteca extra)
 - **Qualidade:** Muito boa
 
-## Solução Implementada
+## Soluçêo Implementada
 
-**Opção 1: Juntar Segmentos**
+**Opçêo 1: Juntar Segmentos**
 
 ```python
 def merge_incomplete_segments(segments):
     """
-    Junta segmentos que terminam com vírgula ou sem pontuação final
+    Junta segmentos que terminam com vírgula ou sem pontuaçêo final
     com o próximo segmento para formar frases completas.
     """
     merged = []
@@ -79,14 +79,14 @@ def merge_incomplete_segments(segments):
             if ends_with_punctuation(buffer['text']):
                 merged.append(buffer)
                 buffer = None
-            # Senão, continua acumulando
+            # Senêo, continua acumulando
         else:
             if needs_merge(seg['text']):
                 buffer = seg.copy()
             else:
                 merged.append(seg)
 
-    # Não esquecer o último buffer
+    # Nêo esquecer o último buffer
     if buffer:
         merged.append(buffer)
 
@@ -99,7 +99,7 @@ def merge_incomplete_segments(segments):
 |-------|--------|
 | 243 segmentos | ~180-200 segmentos |
 | 35% frases incompletas | <5% frases incompletas |
-| Tradução sem contexto | Tradução com contexto completo |
+| Traduçêo sem contexto | Traduçêo com contexto completo |
 
 ## Data da Análise
 
@@ -107,6 +107,6 @@ def merge_incomplete_segments(segments):
 
 ## Arquivos Relacionados
 
-- `dublar_pro_v4.py` - Script principal (função merge implementada)
-- `dub_work/asr.srt` - Transcrição original do Whisper
-- `dub_work/asr_trad.srt` - Tradução dos segmentos
+- `dublar_pro_v4.py` - Script principal (funçêo merge implementada)
+- `dub_work/asr.srt` - Transcriçêo original do Whisper
+- `dub_work/asr_trad.srt` - Traduçêo dos segmentos

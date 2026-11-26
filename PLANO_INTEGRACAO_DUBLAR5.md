@@ -1,17 +1,17 @@
-# Plano de Integração: Chatterbox TTS no inemavox
+# Plano de Integraçêo: Chatterbox TTS no inemavox
 
 **Preparado em:** 2026-02-22
-**Sessão de origem:** `~/projetos/chatterbox` (Claude Code)
+**Sessêo de origem:** `~/projetos/chatterbox` (Claude Code)
 **Destino:** `~/projetos/inemavox/dublar_pro_v5.py`
 
-> Este documento contém tudo que a próxima sessão Claude Code (aberta em `~/projetos/inemavox`) precisa para implementar a integração sem pesquisa adicional.
+> Este documento contém tudo que a próxima sessêo Claude Code (aberta em `~/projetos/inemavox`) precisa para implementar a integraçêo sem pesquisa adicional.
 
 ---
 
 ## Contexto: O que já foi validado
 
 ### Modelos Chatterbox disponíveis
-| Modelo | Classe Python | Idiomas | Velocidade | Observação |
+| Modelo | Classe Python | Idiomas | Velocidade | Observaçêo |
 |--------|--------------|---------|------------|------------|
 | Turbo (350M) | `chatterbox.tts_turbo.ChatterboxTurboTTS` | EN only | ~2.7s/frase | Suporta tags `[chuckle]`, `[cough]` |
 | English (500M) | `chatterbox.tts.ChatterboxTTS` | EN only | ~3-5s/frase | LLaMA-based |
@@ -26,13 +26,13 @@
 - Nome: `chatterbox`
 - Python: `/home/nmaldaner/miniconda3/envs/chatterbox/bin/python3`
 - Deps críticas: `torch==2.10.0+cu130`, `transformers==4.46.3`, `safetensors==0.5.3`, `diffusers==0.29.0`, `numpy<1.26`, `soundfile`
-- **Não** pode ser importado diretamente do venv do inemavox — deps incompatíveis
+- **Nêo** pode ser importado diretamente do venv do inemavox — deps incompatíveis
 
 ---
 
 ## Problema Arquitetural
 
-O `dublar_pro_v5.py` roda no **venv do inemavox** (Python 3.12) ou container Docker. O Chatterbox só existe no **conda env `chatterbox`** (Python 3.11). Solução: **subprocess + JSON**.
+O `dublar_pro_v5.py` roda no **venv do inemavox** (Python 3.12) ou container Docker. O Chatterbox só existe no **conda env `chatterbox`** (Python 3.11). Soluçêo: **subprocess + JSON**.
 
 ---
 
@@ -197,7 +197,7 @@ if __name__ == "__main__":
 
 ### Arquivo 2: EDITAR `inemavox/dublar_pro_v5.py`
 
-#### Mudança A — Nova função `tts_chatterbox()` (inserir após linha 1890, antes do bloco `# ETAPA 6: TTS (EDGE - PADRAO v4)`)
+#### Mudança A — Nova funçêo `tts_chatterbox()` (inserir após linha 1890, antes do bloco `# ETAPA 6: TTS (EDGE - PADRAO v4)`)
 
 ```python
 # ============================================================================
@@ -229,12 +229,12 @@ def tts_chatterbox(segments, workdir, tgt_lang, voice_sample=None):
     worker_script = Path(__file__).parent / "chatterbox_tts_worker.py"
 
     if not Path(chatterbox_python).exists():
-        print(f"[ERRO] Python Chatterbox não encontrado: {chatterbox_python}")
+        print(f"[ERRO] Python Chatterbox nêo encontrado: {chatterbox_python}")
         print("[DICA] Defina CHATTERBOX_PYTHON=/path/para/python3 do conda env chatterbox")
         return None, None, None
 
     if not worker_script.exists():
-        print(f"[ERRO] Worker não encontrado: {worker_script}")
+        print(f"[ERRO] Worker nêo encontrado: {worker_script}")
         return None, None, None
 
     CHATTERBOX_SR = 24000
@@ -259,7 +259,7 @@ def tts_chatterbox(segments, workdir, tgt_lang, voice_sample=None):
             cmd += ["--ref", str(voice_sample)]
             print(f"[INFO] Voice clone ativo: {voice_sample}")
         else:
-            print("[INFO] Sem referência de voz — usando voz padrão")
+            print("[INFO] Sem referência de voz — usando voz padrêo")
 
         print(f"[INFO] Iniciando Chatterbox worker (lang={tgt_lang})...")
         result = subprocess.run(
@@ -338,7 +338,7 @@ Inserir **antes** de `elif args.tts == "edge":`:
 
 ## Referência: Linhas exatas em dublar_pro_v5.py
 
-| Local | Linha (aprox) | Ação |
+| Local | Linha (aprox) | Açêo |
 |-------|--------------|------|
 | Fim de `tts_xtts_clone()` | 1890 | Inserir `tts_chatterbox()` após esta linha |
 | argparse `--tts` | 2891 | Adicionar `"chatterbox"` nas choices |
@@ -346,7 +346,7 @@ Inserir **antes** de `elif args.tts == "edge":`:
 
 ---
 
-## Teste após integração
+## Teste após integraçêo
 
 ```bash
 cd ~/projetos/inemavox
@@ -365,10 +365,10 @@ export CHATTERBOX_PYTHON=/usr/bin/python3  # ou path do env no container
 
 ---
 
-## Notas para a sessão no inemavox
+## Notas para a sessêo no inemavox
 
-1. **Não alterar** a lógica de sync/fade/mux — SR 24000 já é suportado pelo rubberband
-2. **Não instalar** chatterbox no venv do inemavox — conflito certo com numpy/torch
-3. O worker roda **em processo separado** — VRAM do Chatterbox não interfere com outros modelos (M2M100, Whisper) desde que não rodem em paralelo
+1. **Nêo alterar** a lógica de sync/fade/mux — SR 24000 já é suportado pelo rubberband
+2. **Nêo instalar** chatterbox no venv do inemavox — conflito certo com numpy/torch
+3. O worker roda **em processo separado** — VRAM do Chatterbox nêo interfere com outros modelos (M2M100, Whisper) desde que nêo rodem em paralelo
 4. Se Ollama + Chatterbox rodarem juntos, monitorar VRAM (128 GB é suficiente, mas modelo Multilingual usa ~8 GB)
 5. A variável `voice_sample` já existe no pipeline (linha 3015-3017) — `--clonar-voz` a popula automaticamente

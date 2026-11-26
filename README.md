@@ -1,4 +1,4 @@
-﻿# inemaVOX 2
+# inemaVOX 2
 
 Suite de IA para videos: dublagem automatica, transcricao, corte de clips e download.
 
@@ -220,4 +220,4 @@ ffmpeg -version
 
 ---
 
-Projeto adaptado da comunidade INEMA TDS - Marca Arckhe
+Projeto  - ARCKHÉe

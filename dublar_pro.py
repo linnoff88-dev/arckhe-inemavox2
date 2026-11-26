@@ -1,6 +1,6 @@
 # dublar_pro.py
 # Pipeline de dublagem PROFISSIONAL com todas as otimizações
-# Inclui: tradução melhorada, TTS otimizado, sincronização avançada, paralelização
+# Inclui: traduçêo melhorada, TTS otimizado, sincronizaçêo avançada, paralelizaçêo
 
 import os, sys, json, csv, argparse, subprocess, shutil, re, warnings
 from pathlib import Path
@@ -17,7 +17,7 @@ warnings.filterwarnings("ignore")
 
 VERSION = "3.0.0"
 
-# Caracteres por segundo por idioma (para estimativa de duração)
+# Caracteres por segundo por idioma (para estimativa de duraçêo)
 CPS_POR_IDIOMA = {
     "pt": 14, "pt-br": 14, "pt_br": 14,
     "en": 12, "en-us": 12, "en-gb": 12,
@@ -28,11 +28,11 @@ CPS_POR_IDIOMA = {
 }
 
 # ============================================================================
-# DICIONÁRIO DE CORREÇÕES DE TRADUÇÃO
+# DICIONÁRIO DE CORREÇÕES DE TRADUÇêO
 # ============================================================================
 
 CORRECOES_TRADUCAO = {
-    # Erros comuns de tradução literal
+    # Erros comuns de traduçêo literal
     "escândalo": "zero",                    # "from scratch" mal traduzido
     "a partir de escândalo": "do zero",
     "desde escândalo": "do zero",
@@ -62,26 +62,26 @@ CORRECOES_TRADUCAO = {
     "propriedades": "props",
     "renderizar": "renderizar",
 
-    # Correções de pontuação
-    ".Então": ". Então",
+    # Correções de pontuaçêo
+    ".Entêo": ". Entêo",
     ".Vou": ". Vou",
     ".Bem": ". Bem",
     ".Isso": ". Isso",
     ".E": ". E",
     ".O": ". O",
     ".A": ". A",
-    "!Então": "! Então",
-    "?Então": "? Então",
+    "!Entêo": "! Entêo",
+    "?Entêo": "? Entêo",
 
     # Nomes de produtos (preservar)
     "Código Claude": "Claude Code",
     "Código Nuvem": "Cloud Code",
 
     # ============================================
-    # NOVAS CORREÇÕES - Inglês não traduzido
+    # NOVAS CORREÇÕES - Inglês nêo traduzido
     # ============================================
 
-    # let's / let me - muito comum não traduzir
+    # let's / let me - muito comum nêo traduzir
     "let's": "vamos",
     "Let's": "Vamos",
     "let me": "deixe-me",
@@ -104,28 +104,28 @@ CORRECOES_TRADUCAO = {
     "there's": "há",
     "here's": "aqui está",
     "what's": "o que é",
-    "don't": "não",
-    "doesn't": "não",
-    "didn't": "não",
-    "can't": "não pode",
-    "won't": "não vai",
-    "wouldn't": "não iria",
-    "couldn't": "não poderia",
-    "shouldn't": "não deveria",
-    "isn't": "não é",
-    "aren't": "não são",
-    "wasn't": "não estava",
-    "weren't": "não estavam",
-    "haven't": "não tenho",
-    "hasn't": "não tem",
-    "hadn't": "não tinha",
+    "don't": "nêo",
+    "doesn't": "nêo",
+    "didn't": "nêo",
+    "can't": "nêo pode",
+    "won't": "nêo vai",
+    "wouldn't": "nêo iria",
+    "couldn't": "nêo poderia",
+    "shouldn't": "nêo deveria",
+    "isn't": "nêo é",
+    "aren't": "nêo sêo",
+    "wasn't": "nêo estava",
+    "weren't": "nêo estavam",
+    "haven't": "nêo tenho",
+    "hasn't": "nêo tem",
+    "hadn't": "nêo tinha",
 
     # Palavras comuns que escapam
     "the": "o",
     "and": "e",
     "but": "mas",
     "or": "ou",
-    "so": "então",
+    "so": "entêo",
     "just": "apenas",
     "like": "como",
     "really": "realmente",
@@ -267,7 +267,7 @@ CORRECOES_TRADUCAO = {
     "still": "ainda",
     "already": "já",
     "now": "agora",
-    "then": "então",
+    "then": "entêo",
     "here": "aqui",
     "again": "novamente",
     "always": "sempre",
@@ -276,7 +276,7 @@ CORRECOES_TRADUCAO = {
     "sometimes": "às vezes",
     "maybe": "talvez",
     "yes": "sim",
-    "no": "não",
+    "no": "nêo",
     "ok": "ok",
     "okay": "ok",
     "please": "por favor",
@@ -360,13 +360,13 @@ CORRECOES_TRADUCAO = {
     "answers": "respostas",
     "problem": "problema",
     "problems": "problemas",
-    "solution": "solução",
+    "solution": "soluçêo",
     "solutions": "soluções",
     "result": "resultado",
     "results": "resultados",
     "idea": "ideia",
     "ideas": "ideias",
-    "reason": "razão",
+    "reason": "razêo",
     "reasons": "razões",
     "fact": "fato",
     "facts": "fatos",
@@ -394,9 +394,9 @@ CORRECOES_TRADUCAO = {
     "year": "ano",
     "years": "anos",
     "today": "hoje",
-    "tomorrow": "amanhã",
+    "tomorrow": "amanhê",
     "yesterday": "ontem",
-    "morning": "manhã",
+    "morning": "manhê",
     "afternoon": "tarde",
     "evening": "noite",
     "night": "noite",
@@ -460,7 +460,7 @@ CORRECOES_TRADUCAO = {
 
 # Termos que NUNCA devem ser traduzidos
 TERMOS_PRESERVAR = {
-    # Programação
+    # Programaçêo
     "string", "array", "boolean", "null", "undefined", "true", "false",
     "const", "let", "var", "function", "class", "return", "async", "await",
     "promise", "callback", "middleware", "endpoint", "props", "state", "hook",
@@ -493,7 +493,7 @@ TERMOS_PRESERVAR = {
 # ============================================================================
 
 GLOSSARIO_TECNICO = {
-    # Programação básica
+    # Programaçêo básica
     "variable": "variável",
     "parameter": "parâmetro",
     "argument": "argumento",
@@ -506,23 +506,23 @@ GLOSSARIO_TECNICO = {
     "inheritance": "herança",
     "polymorphism": "polimorfismo",
     "encapsulation": "encapsulamento",
-    "abstraction": "abstração",
+    "abstraction": "abstraçêo",
 
     # Web development
-    "request": "requisição",
+    "request": "requisiçêo",
     "response": "resposta",
     "header": "cabeçalho",
     "body": "corpo",
     "query": "consulta",
     "route": "rota",
     "controller": "controlador",
-    "view": "visualização",
+    "view": "visualizaçêo",
     "template": "template",
     "component": "componente",
     "directive": "diretiva",
     "service": "serviço",
     "provider": "provedor",
-    "dependency injection": "injeção de dependência",
+    "dependency injection": "injeçêo de dependência",
 
     # Database
     "database": "banco de dados",
@@ -534,7 +534,7 @@ GLOSSARIO_TECNICO = {
     "primary key": "chave primária",
     "foreign key": "chave estrangeira",
     "index": "índice",
-    "transaction": "transação",
+    "transaction": "transaçêo",
     "rollback": "rollback",
 
     # DevOps
@@ -543,7 +543,7 @@ GLOSSARIO_TECNICO = {
     "image": "imagem",
     "volume": "volume",
     "network": "rede",
-    "orchestration": "orquestração",
+    "orchestration": "orquestraçêo",
     "scaling": "escalabilidade",
     "load balancer": "balanceador de carga",
     "reverse proxy": "proxy reverso",
@@ -552,13 +552,13 @@ GLOSSARIO_TECNICO = {
 
     # Testing
     "unit test": "teste unitário",
-    "integration test": "teste de integração",
+    "integration test": "teste de integraçêo",
     "end-to-end test": "teste end-to-end",
     "mock": "mock",
     "stub": "stub",
-    "assertion": "asserção",
+    "assertion": "asserçêo",
     "coverage": "cobertura",
-    "regression": "regressão",
+    "regression": "regressêo",
 
     # Agile
     "sprint": "sprint",
@@ -599,7 +599,7 @@ def ensure_ffmpeg():
     """Verifica se FFmpeg está instalado"""
     for bin in ("ffmpeg", "ffprobe"):
         if not shutil.which(bin):
-            print(f"[ERRO] {bin} não encontrado no PATH.")
+            print(f"[ERRO] {bin} nêo encontrado no PATH.")
             print("Instale com: sudo apt install ffmpeg")
             sys.exit(1)
 
@@ -608,7 +608,7 @@ def check_rubberband():
     return shutil.which("rubberband") is not None
 
 def ffprobe_duration(path):
-    """Obtém duração de arquivo de áudio/vídeo"""
+    """Obtém duraçêo de arquivo de áudio/vídeo"""
     try:
         out = subprocess.check_output([
             "ffprobe", "-v", "error",
@@ -638,7 +638,7 @@ def get_device():
             return "cuda"
     except:
         pass
-    print("[CPU] Usando CPU (GPU não disponível)")
+    print("[CPU] Usando CPU (GPU nêo disponível)")
     return "cpu"
 
 # ============================================================================
@@ -669,13 +669,13 @@ def load_checkpoint(workdir):
     return None
 
 # ============================================================================
-# ETAPA 3: TRANSCRIÇÃO (WHISPER)
+# ETAPA 3: TRANSCRIÇêO (WHISPER)
 # ============================================================================
 
 def transcribe_faster_whisper(wav_path, workdir, src_lang, model_size="medium"):
-    """Transcrição com Faster-Whisper otimizado"""
+    """Transcriçêo com Faster-Whisper otimizado"""
     print("\n" + "="*60)
-    print("=== ETAPA 3: Transcrição (Faster-Whisper) ===")
+    print("=== ETAPA 3: Transcriçêo (Faster-Whisper) ===")
     print("="*60)
 
     from faster_whisper import WhisperModel
@@ -740,11 +740,11 @@ def transcribe_faster_whisper(wav_path, workdir, src_lang, model_size="medium"):
     return json_path, srt_path, segs
 
 # ============================================================================
-# ETAPA 4: TRADUÇÃO (M2M100 MELHORADO)
+# ETAPA 4: TRADUÇêO (M2M100 MELHORADO)
 # ============================================================================
 
 def proteger_termos_tecnicos(texto):
-    """Protege termos técnicos antes da tradução"""
+    """Protege termos técnicos antes da traduçêo"""
     protegido = texto
     mapa = {}
 
@@ -762,19 +762,19 @@ def proteger_termos_tecnicos(texto):
     return protegido, mapa
 
 def restaurar_termos_tecnicos(texto, mapa):
-    """Restaura termos técnicos após tradução"""
+    """Restaura termos técnicos após traduçêo"""
     restaurado = texto
     for placeholder, original in mapa.items():
         restaurado = restaurado.replace(placeholder, original)
     return restaurado
 
 def aplicar_correcoes(texto):
-    """Aplica dicionário de correções pós-tradução"""
+    """Aplica dicionário de correções pós-traduçêo"""
     corrigido = texto
 
     # Separar correções em dois grupos:
     # 1. Frases (contém espaço) - substituir direto
-    # 2. Palavras únicas - usar word boundary para não quebrar outras palavras
+    # 2. Palavras únicas - usar word boundary para nêo quebrar outras palavras
 
     frases = {k: v for k, v in CORRECOES_TRADUCAO.items() if ' ' in k or "'" in k}
     palavras = {k: v for k, v in CORRECOES_TRADUCAO.items() if ' ' not in k and "'" not in k}
@@ -787,13 +787,13 @@ def aplicar_correcoes(texto):
 
     # Aplicar palavras com word boundary
     for errado, correto in palavras.items():
-        # Só aplicar se a palavra está isolada (não parte de outra)
+        # Só aplicar se a palavra está isolada (nêo parte de outra)
         # Usar regex com word boundary
         pattern = re.compile(r'\b' + re.escape(errado) + r'\b', re.IGNORECASE)
 
         def replace_match(m):
             original = m.group(0)
-            # Preservar capitalização
+            # Preservar capitalizaçêo
             if original.isupper():
                 return correto.upper()
             elif original[0].isupper():
@@ -803,7 +803,7 @@ def aplicar_correcoes(texto):
 
         corrigido = pattern.sub(replace_match, corrigido)
 
-    # Corrigir espaçamento após pontuação
+    # Corrigir espaçamento após pontuaçêo
     corrigido = re.sub(r'([.!?])([A-ZÀ-Ú])', r'\1 \2', corrigido)
 
     # Remover espaços duplicados
@@ -812,7 +812,7 @@ def aplicar_correcoes(texto):
     return corrigido.strip()
 
 def aplicar_glossario(texto, src_lang, tgt_lang):
-    """Aplica glossário técnico na tradução"""
+    """Aplica glossário técnico na traduçêo"""
     if src_lang != "en" or tgt_lang != "pt":
         return texto
 
@@ -825,18 +825,18 @@ def aplicar_glossario(texto, src_lang, tgt_lang):
     return resultado
 
 def estimar_duracao_texto(texto, idioma="pt"):
-    """Estima duração de fala para um texto"""
+    """Estima duraçêo de fala para um texto"""
     cps = CPS_POR_IDIOMA.get(idioma.lower(), 13)
     return len(texto) / cps
 
 def simplificar_texto(texto, duracao_alvo, idioma="pt"):
-    """Simplifica texto se for muito longo para a duração"""
+    """Simplifica texto se for muito longo para a duraçêo"""
     duracao_estimada = estimar_duracao_texto(texto, idioma)
 
     if duracao_estimada <= duracao_alvo * 1.2:
-        return texto  # OK, não precisa simplificar
+        return texto  # OK, nêo precisa simplificar
 
-    # Estratégias de simplificação
+    # Estratégias de simplificaçêo
     simplificado = texto
 
     # 1. Remover palavras de enchimento
@@ -881,9 +881,9 @@ def simplificar_texto(texto, duracao_alvo, idioma="pt"):
     return simplificado
 
 def translate_segments_m2m100(segs, src, tgt, workdir, use_large_model=False):
-    """Tradução com M2M100 melhorado"""
+    """Traduçêo com M2M100 melhorado"""
     print("\n" + "="*60)
-    print("=== ETAPA 4: Tradução (M2M100 Melhorado) ===")
+    print("=== ETAPA 4: Traduçêo (M2M100 Melhorado) ===")
     print("="*60)
 
     from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
@@ -961,7 +961,7 @@ def translate_segments_m2m100(segs, src, tgt, workdir, use_large_model=False):
             # Aplicar glossário
             txt_final = aplicar_glossario(txt_corrigido, src, tgt)
 
-            # Calcular duração disponível
+            # Calcular duraçêo disponível
             duracao_seg = item["end"] - item["start"]
 
             # Simplificar se muito longo
@@ -1041,14 +1041,14 @@ def split_long_segments(segments, maxdur):
         text = (s.get("text_trad") or "").strip()
         dur = max(0.001, end - start)
 
-        # Não dividir se duração OK ou texto curto
+        # Nêo dividir se duraçêo OK ou texto curto
         if dur <= maxdur or len(text.split()) < 12:
             out.append(s)
             continue
 
         print(f"[SPLIT] Seg {seg_idx}: {dur:.2f}s, {len(text)} chars")
 
-        # Dividir por pontuação
+        # Dividir por pontuaçêo
         parts = re.split(r'([.!?:;,…])', text)
         cps = max(len(text) / dur, 8.0)
 
@@ -1148,7 +1148,7 @@ def tts_bark_optimized(segments, workdir, text_temp=0.7, wave_temp=0.5,
             history = load_history_prompt(history_prompt)
             print(f"[INFO] Usando voz: {history_prompt}")
         except Exception as e:
-            print(f"[WARN] Não foi possível carregar voz {history_prompt}: {e}")
+            print(f"[WARN] Nêo foi possível carregar voz {history_prompt}: {e}")
             history = history_prompt
 
     seg_files = []
@@ -1276,8 +1276,8 @@ def tts_coqui_optimized(segments, workdir, tgt_lang, speaker=None):
     try:
         from TTS.api import TTS
     except ImportError:
-        print("[ERRO] Coqui TTS não está instalado ou não suporta esta versão do Python")
-        print("[INFO] Python 3.13+ não é suportado pelo Coqui TTS")
+        print("[ERRO] Coqui TTS nêo está instalado ou nêo suporta esta versêo do Python")
+        print("[INFO] Python 3.13+ nêo é suportado pelo Coqui TTS")
         print("[INFO] Alternativas:")
         print("       1. Use --tts bark (recomendado)")
         print("       2. Use Python 3.11 para Coqui TTS")
@@ -1357,7 +1357,7 @@ def tts_edge(segments, workdir, tgt_lang, voice=None):
     from scipy.io import wavfile
     import subprocess
 
-    # Mapear idioma para voz padrão
+    # Mapear idioma para voz padrêo
     VOZES_PADRAO = {
         "pt": "pt-BR-AntonioNeural",
         "pt-br": "pt-BR-AntonioNeural",
@@ -1463,7 +1463,7 @@ def tts_piper(segments, workdir, tgt_lang, model_path=None):
 
     # Verificar se modelo existe
     if not model_path:
-        # Tentar encontrar modelo padrão
+        # Tentar encontrar modelo padrêo
         default_paths = [
             Path.home() / ".local/share/piper/pt_BR-faber-medium.onnx",
             Path.home() / "piper-models/pt_BR-faber-medium.onnx",
@@ -1475,7 +1475,7 @@ def tts_piper(segments, workdir, tgt_lang, model_path=None):
                 break
 
     if not model_path or not Path(model_path).exists():
-        print("[ERRO] Modelo Piper não encontrado!")
+        print("[ERRO] Modelo Piper nêo encontrado!")
         print("[INFO] Baixe um modelo pt-BR de:")
         print("       https://github.com/rhasspy/piper/releases")
         print("[INFO] E use: --voice /caminho/para/modelo.onnx")
@@ -1487,7 +1487,7 @@ def tts_piper(segments, workdir, tgt_lang, model_path=None):
 
     print(f"[INFO] Modelo: {model_path}")
 
-    SAMPLE_RATE = 22050  # Piper usa 22050 por padrão
+    SAMPLE_RATE = 22050  # Piper usa 22050 por padrêo
 
     seg_files = []
     tsv = Path(workdir, "segments.csv")
@@ -1587,7 +1587,7 @@ def apply_fade(seg_files, workdir, fade_in=0.01, fade_out=0.01):
     return xf_files
 
 # ============================================================================
-# ETAPA 7: SINCRONIZAÇÃO AVANÇADA
+# ETAPA 7: SINCRONIZAÇêO AVANÇADA
 # ============================================================================
 
 def atempo_chain(factor):
@@ -1622,7 +1622,7 @@ def time_stretch_rubberband(input_path, output_path, ratio):
         return False
 
 def sync_fit_advanced(p, target, workdir, sr, tol, maxstretch, use_rubberband=True):
-    """Sincronização fit avançada com opção de rubberband ou librosa"""
+    """Sincronizaçêo fit avançada com opçêo de rubberband ou librosa"""
     from scipy.io import wavfile as wf
 
     cur = ffprobe_duration(p)
@@ -1671,7 +1671,7 @@ def sync_fit_advanced(p, target, workdir, sr, tol, maxstretch, use_rubberband=Tr
         elif data.dtype == np.int32:
             data = data.astype(np.float32) / 2147483647.0
 
-        # Time stretch com librosa (rate = 1/ratio para obter a duração desejada)
+        # Time stretch com librosa (rate = 1/ratio para obter a duraçêo desejada)
         # Se ratio < 1, precisamos esticar (rate < 1)
         # Se ratio > 1, precisamos comprimir (rate > 1)
         stretched = librosa.effects.time_stretch(data, rate=1.0/ratio)
@@ -1698,7 +1698,7 @@ def sync_fit_advanced(p, target, workdir, sr, tol, maxstretch, use_rubberband=Tr
         return p
 
 def sync_pad(p, target, workdir, sr):
-    """Sincronização com padding usando NumPy
+    """Sincronizaçêo com padding usando NumPy
 
     NOTA: FFmpeg apad/atrim tem bugs em ARM64, usando NumPy.
     """
@@ -1743,7 +1743,7 @@ def sync_pad(p, target, workdir, sr):
         return p
 
 def sync_smart_advanced(p, target, workdir, sr, tol, maxstretch, use_rubberband=True):
-    """Sincronização smart avançada"""
+    """Sincronizaçêo smart avançada"""
     cur = ffprobe_duration(p)
     if cur <= 0:
         return p
@@ -1764,13 +1764,13 @@ def sync_smart_advanced(p, target, workdir, sr, tol, maxstretch, use_rubberband=
         return p
 
 # ============================================================================
-# ETAPA 8: CONCATENAÇÃO
+# ETAPA 8: CONCATENAÇêO
 # ============================================================================
 
 def concat_segments(seg_files, workdir, samplerate):
     """Concatena segmentos de áudio"""
     print("\n" + "="*60)
-    print("=== ETAPA 8: Concatenação ===")
+    print("=== ETAPA 8: Concatenaçêo ===")
     print("="*60)
 
     lst = Path(workdir, "list.txt")
@@ -1793,7 +1793,7 @@ def concat_segments(seg_files, workdir, samplerate):
 def postprocess_audio(wav_in, workdir, samplerate):
     """Pós-processamento do áudio final usando NumPy
 
-    NOTA: FFmpeg loudnorm tem bug em ARM64, usando normalização simples.
+    NOTA: FFmpeg loudnorm tem bug em ARM64, usando normalizaçêo simples.
     """
     print("\n" + "="*60)
     print("=== ETAPA 9: Pós-processamento ===")
@@ -1812,7 +1812,7 @@ def postprocess_audio(wav_in, workdir, samplerate):
         elif data.dtype == np.int32:
             data = data.astype(np.float32) / 2147483647.0
 
-        # Normalização simples (peak normalization com headroom)
+        # Normalizaçêo simples (peak normalization com headroom)
         max_val = np.max(np.abs(data))
         if max_val > 0:
             # Normalizar para -1.5dB de headroom (≈ 0.84)
@@ -1901,7 +1901,7 @@ def calculate_quality_metrics(segments, seg_files, workdir):
 
             total_ratio += ratio
 
-        # Estatísticas de tradução
+        # Estatísticas de traduçêo
         orig = seg.get("text_original", "")
         trad = seg.get("text_trad", "")
         metricas["translation_stats"]["chars_original"] += len(orig)
@@ -1918,13 +1918,13 @@ def calculate_quality_metrics(segments, seg_files, workdir):
 
     # Imprimir resumo
     print(f"  Segmentos totais: {metricas['total_segments']}")
-    print(f"  Sincronização:")
+    print(f"  Sincronizaçêo:")
     print(f"    - Dentro de 5%: {metricas['sync_stats']['within_5pct']}")
     print(f"    - Dentro de 10%: {metricas['sync_stats']['within_10pct']}")
     print(f"    - Dentro de 20%: {metricas['sync_stats']['within_20pct']}")
     print(f"    - Acima de 20%: {metricas['sync_stats']['over_20pct']}")
-    print(f"  Tradução:")
-    print(f"    - Compressão média: {metricas['translation_stats']['avg_compression']:.2%}")
+    print(f"  Traduçêo:")
+    print(f"    - Compressêo média: {metricas['translation_stats']['avg_compression']:.2%}")
 
     # Salvar métricas
     metrics_file = Path(workdir, "quality_metrics.json")
@@ -1972,20 +1972,20 @@ Exemplos:
     ap.add_argument("--wavetemp", type=float, default=0.5, help="Bark waveform temperature (default: 0.5)")
     ap.add_argument("--max-retries", type=int, default=2, help="Max retries TTS (default: 2)")
 
-    # Tradução
+    # Traduçêo
     ap.add_argument("--large-model", action="store_true", help="Usar M2M100 1.2B (melhor qualidade, mais VRAM)")
     ap.add_argument("--whisper-model", default="medium", choices=["tiny", "small", "medium", "large"],
                    help="Modelo Whisper (default: medium)")
 
-    # Sincronização
+    # Sincronizaçêo
     ap.add_argument("--sync", choices=["none", "fit", "pad", "smart"], default="smart",
-                   help="Modo de sincronização (default: smart)")
+                   help="Modo de sincronizaçêo (default: smart)")
     ap.add_argument("--tolerance", type=float, default=0.1, help="Tolerância sync (default: 0.1 = 10%%)")
-    ap.add_argument("--maxstretch", type=float, default=1.4, help="Max compressão/expansão (default: 1.4)")
+    ap.add_argument("--maxstretch", type=float, default=1.4, help="Max compressêo/expansêo (default: 1.4)")
     ap.add_argument("--use-rubberband", action="store_true", help="Usar rubberband para time-stretch")
 
     # Outros
-    ap.add_argument("--maxdur", type=float, default=10.0, help="Duração máxima de segmento (default: 10s)")
+    ap.add_argument("--maxdur", type=float, default=10.0, help="Duraçêo máxima de segmento (default: 10s)")
     ap.add_argument("--rate", type=int, default=24000, help="Sample rate final (default: 24000)")
     ap.add_argument("--bitrate", default="192k", help="Bitrate AAC (default: 192k)")
     ap.add_argument("--fade", type=int, default=1, choices=[0, 1], help="Aplicar fade (default: 1)")
@@ -1998,7 +1998,7 @@ Exemplos:
 
     video_in = Path(args.inp).resolve()
     if not video_in.exists():
-        print(f"[ERRO] Arquivo não encontrado: {video_in}")
+        print(f"[ERRO] Arquivo nêo encontrado: {video_in}")
         sys.exit(1)
 
     # Diretórios
@@ -2020,7 +2020,7 @@ Exemplos:
     elif args.tts == "edge":
         display_voice = "pt-BR-AntonioNeural (default)"
     elif args.tts == "piper":
-        display_voice = "modelo padrão"
+        display_voice = "modelo padrêo"
     else:
         display_voice = "v2/pt_speaker_3 (default)"
 
@@ -2030,19 +2030,19 @@ Exemplos:
     print(f"  Idiomas: {args.src} → {args.tgt}")
     print(f"  TTS: {args.tts} (voz: {display_voice})")
     print(f"  Sync: {args.sync} (tol: {args.tolerance}, max: {args.maxstretch})")
-    print(f"  Modelo grande: {'Sim' if args.large_model else 'Não'}")
+    print(f"  Modelo grande: {'Sim' if args.large_model else 'Nêo'}")
 
     # Verificar rubberband
     if args.use_rubberband:
         if check_rubberband():
             print(f"  Rubberband: Disponível")
         else:
-            print(f"  Rubberband: Não instalado (usando atempo)")
+            print(f"  Rubberband: Nêo instalado (usando atempo)")
             args.use_rubberband = False
 
-    # ========== ETAPA 1: Extração de áudio ==========
+    # ========== ETAPA 1: Extraçêo de áudio ==========
     print("\n" + "="*60)
-    print("=== ETAPA 1-2: Validação e Extração ===")
+    print("=== ETAPA 1-2: Validaçêo e Extraçêo ===")
     print("="*60)
 
     audio_src = Path(workdir, "audio_src.wav")
@@ -2052,13 +2052,13 @@ Exemplos:
 
     save_checkpoint(workdir, 2, "extraction")
 
-    # ========== ETAPA 3: Transcrição ==========
+    # ========== ETAPA 3: Transcriçêo ==========
     asr_json, asr_srt, segs = transcribe_faster_whisper(
         audio_src, workdir, args.src, args.whisper_model
     )
     save_checkpoint(workdir, 3, "transcription")
 
-    # ========== ETAPA 4: Tradução ==========
+    # ========== ETAPA 4: Traduçêo ==========
     segs_trad, trad_json, trad_srt = translate_segments_m2m100(
         segs, args.src, args.tgt, workdir, args.large_model
     )
@@ -2097,9 +2097,9 @@ Exemplos:
     if args.fade == 1:
         seg_files = apply_fade(seg_files, workdir)
 
-    # ========== ETAPA 7: Sincronização ==========
+    # ========== ETAPA 7: Sincronizaçêo ==========
     print("\n" + "="*60)
-    print("=== ETAPA 7: Sincronização ===")
+    print("=== ETAPA 7: Sincronizaçêo ===")
     print("="*60)
 
     fixed = []
@@ -2121,7 +2121,7 @@ Exemplos:
     seg_files = fixed
     save_checkpoint(workdir, 7, "sync")
 
-    # ========== ETAPA 8: Concatenação ==========
+    # ========== ETAPA 8: Concatenaçêo ==========
     dub_raw = concat_segments(seg_files, workdir, sr_segs)
     save_checkpoint(workdir, 8, "concat")
 

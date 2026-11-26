@@ -4,39 +4,39 @@ Pipeline de voz profissional com todas as otimizações de qualidade.
 
 ## Melhorias Implementadas
 
-### 1. Qualidade da Tradução
+### 1. Qualidade da Traduçêo
 
-| Melhoria | Descrição |
+| Melhoria | Descriçêo |
 |----------|-----------|
 | **Dicionário de correções** | Corrige automaticamente erros comuns ("escândalo" → "zero") |
-| **Proteção de termos técnicos** | Preserva palavras como "API", "callback", "prompt" |
+| **Proteçêo de termos técnicos** | Preserva palavras como "API", "callback", "prompt" |
 | **Glossário técnico** | 100+ termos técnicos mapeados corretamente |
-| **Modelo M2M100 grande** | Opção `--large-model` para usar 1.2B (melhor qualidade) |
-| **Simplificação automática** | Se tradução muito longa, simplifica antes do TTS |
+| **Modelo M2M100 grande** | Opçêo `--large-model` para usar 1.2B (melhor qualidade) |
+| **Simplificaçêo automática** | Se traduçêo muito longa, simplifica antes do TTS |
 
 ### 2. Qualidade do TTS
 
-| Melhoria | Descrição |
+| Melhoria | Descriçêo |
 |----------|-----------|
 | **Temperaturas otimizadas** | `text_temp=0.7, wave_temp=0.5` (fala mais natural e rápida) |
 | **Multi-pass retry** | Se áudio muito longo, tenta até 3x com temperaturas menores |
-| **Estimativa pré-TTS** | Calcula duração esperada ANTES de gerar |
+| **Estimativa pré-TTS** | Calcula duraçêo esperada ANTES de gerar |
 | **Vozes otimizadas** | Default: `v2/pt_speaker_3` (mais natural) |
 
-### 3. Sincronização
+### 3. Sincronizaçêo
 
-| Melhoria | Descrição |
+| Melhoria | Descriçêo |
 |----------|-----------|
 | **Tolerância ajustada** | Default: 10% (mais flexível) |
-| **Rubberband** | Time-stretch com preservação de pitch (opcional) |
+| **Rubberband** | Time-stretch com preservaçêo de pitch (opcional) |
 | **Smart sync melhorado** | Lógica mais inteligente de PAD vs FIT |
 
 ### 4. Outras Melhorias
 
 - **Checkpoint system**: Salva progresso, pode continuar se interromper
-- **Métricas de qualidade**: Gera relatório de sincronização
+- **Métricas de qualidade**: Gera relatório de sincronizaçêo
 - **Logs detalhados**: JSON com todas as configurações
-- **Detecção automática**: GPU/CPU sem configuração manual
+- **Detecçêo automática**: GPU/CPU sem configuraçêo manual
 
 ---
 
@@ -49,7 +49,7 @@ Pipeline de voz profissional com todas as otimizações de qualidade.
 # Com Coqui TTS (mais rápido)
 ./dublar-pro.sh --in video.mp4 --src en --tgt pt --tts coqui
 
-# Com modelo grande (melhor tradução, requer +4GB VRAM)
+# Com modelo grande (melhor traduçêo, requer +4GB VRAM)
 ./dublar-pro.sh --in video.mp4 --src en --tgt pt --large-model
 
 # Máxima qualidade
@@ -77,18 +77,18 @@ TTS:
   --wavetemp FLOAT    Temperatura de waveform Bark (default: 0.5)
   --max-retries N     Tentativas TTS se muito longo (default: 2)
 
-TRADUÇÃO:
+TRADUÇêO:
   --large-model       Usar M2M100 1.2B (melhor qualidade)
   --whisper-model     tiny, small, medium, large (default: medium)
 
-SINCRONIZAÇÃO:
+SINCRONIZAÇêO:
   --sync MODE         none, fit, pad, smart (default: smart)
   --tolerance FLOAT   Tolerância (default: 0.1 = 10%)
-  --maxstretch FLOAT  Max compressão (default: 1.4 = 40%)
+  --maxstretch FLOAT  Max compressêo (default: 1.4 = 40%)
   --use-rubberband    Usar rubberband para time-stretch
 
 OUTROS:
-  --maxdur FLOAT      Duração máxima de segmento (default: 10s)
+  --maxdur FLOAT      Duraçêo máxima de segmento (default: 10s)
   --rate INT          Sample rate final (default: 24000)
   --bitrate STR       Bitrate AAC (default: 192k)
   --fade 0|1          Aplicar fade (default: 1)
@@ -98,7 +98,7 @@ OUTROS:
 
 ## Vozes Disponíveis (Bark)
 
-| Voz | Descrição |
+| Voz | Descriçêo |
 |-----|-----------|
 | `v2/pt_speaker_1` | Masculina 1 |
 | `v2/pt_speaker_2` | Masculina 2 |
@@ -131,8 +131,8 @@ OUTROS:
 ```
 dub_work/
 ├── audio_src.wav           # Áudio extraído
-├── asr.json, asr.srt       # Transcrição original
-├── asr_trad.json, .srt     # Tradução
+├── asr.json, asr.srt       # Transcriçêo original
+├── asr_trad.json, .srt     # Traduçêo
 ├── seg_0001.wav ...        # Segmentos TTS
 ├── dub_raw.wav             # Concatenado
 ├── dub_final.wav           # Pós-processado
@@ -146,11 +146,11 @@ dublado/
 
 ---
 
-## Correções Automáticas de Tradução
+## Correções Automáticas de Traduçêo
 
 O sistema corrige automaticamente:
 
-| Erro Comum | Correção |
+| Erro Comum | Correçêo |
 |------------|----------|
 | "escândalo" | "zero" (from scratch) |
 | "promptes" | "prompts" |
@@ -162,8 +162,8 @@ O sistema corrige automaticamente:
 
 ## Termos Preservados
 
-Não são traduzidos:
-- Programação: `string`, `array`, `function`, `callback`, `async`, `await`
+Nêo sêo traduzidos:
+- Programaçêo: `string`, `array`, `function`, `callback`, `async`, `await`
 - Ferramentas: `git`, `docker`, `npm`, `webpack`
 - Protocolos: `API`, `REST`, `HTTP`, `JSON`, `HTML`, `CSS`
 - Produtos: `Claude Code`, `ChatGPT`, `GitHub`
@@ -181,7 +181,7 @@ Não são traduzidos:
 --tts coqui
 ```
 
-### Tradução com erros
+### Traduçêo com erros
 ```bash
 # Usar modelo maior
 --large-model
@@ -200,22 +200,22 @@ export CUDA_VISIBLE_DEVICES=""
 # Usar modelo Whisper menor
 --whisper-model small
 
-# Não usar modelo grande de tradução
-# (não passar --large-model)
+# Nêo usar modelo grande de traduçêo
+# (nêo passar --large-model)
 ```
 
 ---
 
-## Comparação: dublar.py vs dublar_pro.py
+## Comparaçêo: dublar.py vs dublar_pro.py
 
 | Feature | dublar.py | dublar_pro.py |
 |---------|-----------|---------------|
-| Correção de tradução | Não | Sim |
-| Proteção termos técnicos | Não | Sim |
-| Estimativa pré-TTS | Não | Sim |
-| Multi-pass TTS | Não | Sim |
-| Rubberband | Não | Sim |
-| Métricas qualidade | Não | Sim |
-| Checkpoint/resume | Não | Sim |
+| Correçêo de traduçêo | Nêo | Sim |
+| Proteçêo termos técnicos | Nêo | Sim |
+| Estimativa pré-TTS | Nêo | Sim |
+| Multi-pass TTS | Nêo | Sim |
+| Rubberband | Nêo | Sim |
+| Métricas qualidade | Nêo | Sim |
+| Checkpoint/resume | Nêo | Sim |
 | Temperaturas otimizadas | 0.6/0.6 | 0.7/0.5 |
 | Tolerância default | 5% | 10% |

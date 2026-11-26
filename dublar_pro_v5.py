@@ -556,7 +556,7 @@ def load_checkpoint(workdir):
 # FASE 3: DIARIZACAO (DETECTAR FALANTES)
 # ============================================================================
 
-# Python do ambiente NeMo/miniconda (usado como subprocess para diarização NeMo)
+# Python do ambiente NeMo/miniconda (usado como subprocess para diarizaçêo NeMo)
 _NEMO_PYTHON = os.environ.get(
     "NEMO_PYTHON",
     "/home/nmaldaner/miniconda3/bin/python3"
@@ -564,7 +564,7 @@ _NEMO_PYTHON = os.environ.get(
 
 
 def _liberar_memoria():
-    """Força liberação agressiva de RAM: Python GC + glibc malloc_trim + sleep.
+    """Força liberaçêo agressiva de RAM: Python GC + glibc malloc_trim + sleep.
 
     Usado antes de carregar modelos pesados (pyannote, NeMo) para garantir que
     modelos anteriores (CTranslate2, etc.) realmente devolvam páginas ao SO.
@@ -587,7 +587,7 @@ def _liberar_memoria():
 
 
 def diarize_audio_nemo(wav_path, workdir, num_speakers=None):
-    """Diarização usando NeMo nativo (titanet_large + vad_multilingual_marblenet).
+    """Diarizaçêo usando NeMo nativo (titanet_large + vad_multilingual_marblenet).
 
     Executa um subprocess usando o Python do ambiente NeMo (miniconda3).
     Vantagens sobre pyannote: GPU nativa NVIDIA, sem dependências de torchaudio, sem gated models HF.
@@ -747,7 +747,7 @@ except Exception as e:
 
     result_path = nemo_outdir / "diar_result.json"
 
-    print("[INFO] Diarização NeMo: iniciando subprocess...")
+    print("[INFO] Diarizaçêo NeMo: iniciando subprocess...")
     try:
         proc = subprocess.run(
             [_NEMO_PYTHON, "-c", script],
@@ -758,25 +758,25 @@ except Exception as e:
             print(f"[ERRO] Subprocess NeMo falhou (exit {proc.returncode})")
             return None
     except subprocess.TimeoutExpired:
-        print("[ERRO] Diarização NeMo timeout (>10min)")
+        print("[ERRO] Diarizaçêo NeMo timeout (>10min)")
         return None
     except FileNotFoundError:
-        print(f"[ERRO] Python NeMo não encontrado: {_NEMO_PYTHON}")
+        print(f"[ERRO] Python NeMo nêo encontrado: {_NEMO_PYTHON}")
         return None
 
     # Ler resultado
     if not result_path.exists():
-        print("[ERRO] Resultado NeMo não encontrado")
+        print("[ERRO] Resultado NeMo nêo encontrado")
         return None
 
     try:
         data = json.loads(result_path.read_text())
         if "error" in data:
-            print(f"[ERRO] Diarização NeMo: {data['error']}")
+            print(f"[ERRO] Diarizaçêo NeMo: {data['error']}")
             return None
         segs = data["segments"]
         speakers = data.get("speakers", [])
-        print(f"[OK] Diarização NeMo: {len(segs)} segmentos, {len(speakers)} falantes")
+        print(f"[OK] Diarizaçêo NeMo: {len(segs)} segmentos, {len(speakers)} falantes")
         return segs
     except Exception as e:
         print(f"[ERRO] Lendo resultado NeMo: {e}")
@@ -1410,7 +1410,7 @@ def _clean_ollama_response(response, original_text):
         if pattern.lower() in text.lower():
             return None
 
-    # Se a resposta é igual ao texto original (não traduziu), retorna None
+    # Se a resposta é igual ao texto original (nêo traduziu), retorna None
     if text.strip() == original_text.strip():
         return None
 
@@ -1418,10 +1418,10 @@ def _clean_ollama_response(response, original_text):
     garbage_patterns = [
         "REGRAS CRÍTICAS:",
         "CRITICAL RULES:",
-        "Tradução concisa (máximo",
+        "Traduçêo concisa (máximo",
         "Concise translation (max",
         "Translation:",
-        "Tradução:",
+        "Traduçêo:",
         "(Note:",
         "Note:",
         "Nota:",
@@ -1435,7 +1435,7 @@ def _clean_ollama_response(response, original_text):
         "- Remove filler",
         "- Manter termos",
         "- Keep technical",
-        "- NÃO adicione",
+        "- NêO adicione",
         "- Do NOT add",
         "- Se tiver dúvida",
         "- If in doubt",
@@ -1443,7 +1443,7 @@ def _clean_ollama_response(response, original_text):
         "Text (",
     ]
 
-    # Se contém qualquer padrão de lixo, tentar extrair só a tradução
+    # Se contém qualquer padrêo de lixo, tentar extrair só a traduçêo
     has_garbage = any(p in text for p in garbage_patterns)
 
     if has_garbage:
@@ -1457,16 +1457,16 @@ def _clean_ollama_response(response, original_text):
             # Ignorar linhas que começam com "-" (instruções)
             if line.startswith('-'):
                 continue
-            # Ignorar linhas que são claramente instruções
+            # Ignorar linhas que sêo claramente instruções
             if any(p in line for p in garbage_patterns):
                 continue
-            # Esta linha pode ser a tradução
+            # Esta linha pode ser a traduçêo
             # Remover prefixos comuns
             if ':' in line:
                 parts = line.split(':', 1)
                 if len(parts) > 1 and len(parts[1].strip()) > 5:
                     candidate = parts[1].strip()
-                    # Verificar se não é instrução
+                    # Verificar se nêo é instruçêo
                     if not any(p in candidate for p in garbage_patterns):
                         text = candidate
                         break
@@ -1485,12 +1485,12 @@ def _clean_ollama_response(response, original_text):
         if sep in text:
             text = text.split(sep)[0].strip()
 
-    # Se ainda tem múltiplas linhas, pegar a última que parece tradução válida
+    # Se ainda tem múltiplas linhas, pegar a última que parece traduçêo válida
     if '\n' in text:
         lines = [l.strip() for l in text.split('\n') if l.strip()]
         valid_lines = []
         for line in lines:
-            # Ignorar linhas de instrução
+            # Ignorar linhas de instruçêo
             if line.startswith('-'):
                 continue
             if any(p in line for p in garbage_patterns):
@@ -1499,10 +1499,10 @@ def _clean_ollama_response(response, original_text):
                 valid_lines.append(line)
 
         if valid_lines:
-            # Pegar a última linha válida (geralmente é a tradução)
+            # Pegar a última linha válida (geralmente é a traduçêo)
             text = valid_lines[-1]
 
-    # Validação final: se ainda contém lixo óbvio, retorna None
+    # Validaçêo final: se ainda contém lixo óbvio, retorna None
     final_garbage = ["REGRAS", "CRITICAL", "chars)", "caracteres)", "DUBBING"]
     if any(g in text for g in final_garbage):
         return None
@@ -2669,7 +2669,7 @@ def generate_summary_audio(segs_trad, workdir, tgt_lang, tts_engine, args):
                     "prompt": (
                         f"Faça um resumo objetivo em {tgt_lang} do seguinte conteúdo de vídeo. "
                         f"Use 3 a 5 frases curtas. Comece com 'Neste vídeo' ou similar. "
-                        f"Não use listas, só texto corrido.\n\nConteúdo:\n{texto_completo[:4000]}\n\nResumo:"
+                        f"Nêo use listas, só texto corrido.\n\nConteúdo:\n{texto_completo[:4000]}\n\nResumo:"
                     ),
                     "stream": False,
                     "options": {"num_predict": 200, "temperature": 0.3},

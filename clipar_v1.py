@@ -10,7 +10,7 @@ import time
 import urllib.request
 from pathlib import Path
 
-# Prompts padrão — viral
+# Prompts padrêo — viral
 DEFAULT_SYSTEM_PROMPT = (
     "You are an expert video editor and social media strategist specializing in "
     "viral short-form content. Your goal is to identify the most engaging, "
@@ -30,7 +30,7 @@ DEFAULT_USER_PROMPT = (
     '  {{"start": 120.0, "end": 195.0, "reason": "Viral moment: ..."}}\n]'
 )
 
-# Prompts padrão — topics (por assunto, sem limite de duracao)
+# Prompts padrêo — topics (por assunto, sem limite de duracao)
 DEFAULT_TOPICS_SYSTEM_PROMPT = (
     "You are an expert content analyst specializing in segmenting video content by topic. "
     "Your goal is to identify distinct subjects discussed and group all related content "
@@ -155,7 +155,7 @@ def parse_timestamps(timestamps_str: str) -> list[tuple[float, float]]:
     """Parseia timestamps em lista de (start, end).
 
     Formatos aceitos:
-      - Padrão:  00:30-02:15, 05:00-07:30
+      - Padrêo:  00:30-02:15, 05:00-07:30
       - SRT:     00:00:00,080 --> 00:00:24,079
     Separadores entre pares: vírgula, ponto-e-vírgula ou nova linha.
     """
@@ -180,7 +180,7 @@ def parse_timestamps(timestamps_str: str) -> list[tuple[float, float]]:
                 print(f"[warn] Clip invalido (start >= end): {part}", flush=True)
             continue
 
-        # Formato padrão: "HH:MM:SS-HH:MM:SS" ou "MM:SS-MM:SS"
+        # Formato padrêo: "HH:MM:SS-HH:MM:SS" ou "MM:SS-MM:SS"
         # Suporta múltiplos pares separados por vírgula na mesma linha
         for subpart in re.split(r",", part):
             subpart = subpart.strip()
@@ -324,7 +324,7 @@ def _build_prompts(
     custom_user: str | None = None,
     topics_mode: bool = False,
 ) -> tuple[str, str]:
-    """Retorna (system_prompt, user_prompt) com suporte a customização."""
+    """Retorna (system_prompt, user_prompt) com suporte a customizaçêo."""
     # Compacta segmentos para reduzir tokens (Whisper gera centenas de segs de 2-5s)
     compacted = _compact_segments(segments, target_chunk_secs=30.0)
     print(f"[prompts] Transcript: {len(segments)} segs → {len(compacted)} blocos de ~30s", flush=True)
@@ -458,7 +458,7 @@ def _call_anthropic(system: str, user: str, model: str, api_key: str) -> str:
 
 
 def get_video_duration(video_path: Path) -> float:
-    """Retorna duração do vídeo em segundos via ffprobe."""
+    """Retorna duraçêo do vídeo em segundos via ffprobe."""
     result = subprocess.run(
         ["ffprobe", "-v", "quiet", "-print_format", "json", "-show_format", str(video_path)],
         capture_output=True, text=True,

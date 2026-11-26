@@ -1,4 +1,4 @@
-# Instalação do inemaVOX em Servidor Linux
+# Instalaçêo do inemaVOX em Servidor Linux
 
 Este guia mostra como instalar e configurar o inemaVOX em um servidor Linux.
 
@@ -14,7 +14,7 @@ pip install -r requirements.txt
 python3 dublar.py video.mp4 --src_lang en --tgt_lang pt --tts bark --sync smart
 ```
 
-**Os diretórios `dub_work/` e `dublado/` são criados AUTOMATICAMENTE - você não precisa criar nada!**
+**Os diretórios `dub_work/` e `dublado/` sêo criados AUTOMATICAMENTE - você nêo precisa criar nada!**
 
 ---
 
@@ -42,7 +42,7 @@ sudo apt install -y ffmpeg
 # Instalar dependências de áudio
 sudo apt install -y libsndfile1 libsndfile1-dev
 
-# Verificar instalação
+# Verificar instalaçêo
 python3 --version  # Deve ser 3.10+
 ffmpeg -version
 ffprobe -version
@@ -76,7 +76,7 @@ pip install --upgrade pip wheel setuptools
 
 ## 4. Instalar Dependências Python
 
-### Opção A: CPU Only (Mais simples, funciona em qualquer servidor)
+### Opçêo A: CPU Only (Mais simples, funciona em qualquer servidor)
 ```bash
 # Instalar PyTorch para CPU
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
@@ -85,7 +85,7 @@ pip install torch torchvision torchaudio --index-url https://download.pytorch.or
 pip install -r requirements.txt
 ```
 
-### Opção B: GPU (Se tiver NVIDIA GPU)
+### Opçêo B: GPU (Se tiver NVIDIA GPU)
 ```bash
 # Verificar se tem GPU NVIDIA
 nvidia-smi
@@ -129,7 +129,7 @@ python3 dublar.py --help
 - `--src_lang`: Idioma de origem (en, es, fr, etc.)
 - `--tgt_lang`: Idioma de destino (pt, en, es, etc.)
 - `--tts`: Engine de voz (bark, coqui)
-- `--sync`: Modo de sincronização (none, fit, pad, smart)
+- `--sync`: Modo de sincronizaçêo (none, fit, pad, smart)
 - `--voice`: Voz específica a usar
 
 ## 6. Scripts Auxiliares
@@ -144,14 +144,14 @@ source venv/bin/activate
 python3 dublar.py "$@"
 EOF
 
-# Dar permissão de execução
+# Dar permissêo de execuçêo
 chmod +x dublar.sh
 
 # Usar assim:
 ./dublar.sh video.mp4 --src_lang en --tgt_lang pt --tts bark --sync smart
 ```
 
-## 7. Testar Instalação
+## 7. Testar Instalaçêo
 
 ```bash
 # Ativar ambiente
@@ -169,19 +169,19 @@ python3 test_quick.py
 
 ## 8. Troubleshooting
 
-### FFmpeg não encontrado:
+### FFmpeg nêo encontrado:
 ```bash
 # Verificar se está no PATH
 which ffmpeg
 which ffprobe
 
-# Se não estiver, adicionar ao PATH
+# Se nêo estiver, adicionar ao PATH
 export PATH=$PATH:/usr/local/bin
 ```
 
-### Erro de permissão:
+### Erro de permissêo:
 ```bash
-# Dar permissão aos scripts Python
+# Dar permissêo aos scripts Python
 chmod +x dublar.py dublar2.py dublar3.py
 ```
 
@@ -233,7 +233,7 @@ dublar/
 ├── dublar31.py
 ├── requirements.txt   # Dependências
 ├── test_*.py          # Scripts de teste
-├── *.md              # Documentação
+├── *.md              # Documentaçêo
 ├── *.bat              # Scripts Windows (ignore no Linux)
 └── .gitignore
 ```
@@ -243,8 +243,8 @@ dublar/
 dublar/
 ├── dub_work/          # ✅ AUTO: Arquivos temporários de processamento
 │   ├── audio_src.wav      # Áudio extraído do vídeo
-│   ├── asr.srt            # Transcrição original
-│   ├── asr_trad.srt       # Tradução
+│   ├── asr.srt            # Transcriçêo original
+│   ├── asr_trad.srt       # Traduçêo
 │   ├── seg_*.wav          # Segmentos de áudio
 │   ├── dub_raw.wav        # Áudio dublado antes do pós-processamento
 │   ├── dub_final.wav      # Áudio dublado final
@@ -256,16 +256,16 @@ dublar/
 
 ### Resumo:
 - **VOCÊ CRIA**: Apenas `venv/` com `python3 -m venv venv`
-- **GIT CLONE**: Todo o código-fonte e documentação
-- **AUTOMÁTICO**: `dub_work/` e `dublado/` são criados quando você roda o script pela primeira vez
+- **GIT CLONE**: Todo o código-fonte e documentaçêo
+- **AUTOMÁTICO**: `dub_work/` e `dublado/` sêo criados quando você roda o script pela primeira vez
 
 ## Notas Importantes
 
-1. **Diretórios são criados automaticamente** - Não crie `dub_work/` ou `dublado/` manualmente!
+1. **Diretórios sêo criados automaticamente** - Nêo crie `dub_work/` ou `dublado/` manualmente!
 2. **Sempre ative o ambiente virtual** antes de usar: `source venv/bin/activate`
 3. **FFmpeg é obrigatório** - sem ele nada funciona
 4. **GPU é opcional** - funciona perfeitamente em CPU (apenas mais lento)
-5. **Scripts .bat não funcionam** no Linux - use os comandos Python diretamente
+5. **Scripts .bat nêo funcionam** no Linux - use os comandos Python diretamente
 6. **Mínimo 8GB RAM** recomendado (16GB+ para vídeos longos)
 
 ## Requisitos de Sistema
@@ -275,11 +275,11 @@ dublar/
 - **RAM**: 8GB mínimo, 16GB+ recomendado
 - **Disco**: 10GB+ para modelos AI
 - **GPU** (opcional): NVIDIA com CUDA 11.8+
-- **FFmpeg**: Versão recente com libx264
+- **FFmpeg**: Versêo recente com libx264
 
 ## Suporte
 
 Para problemas, consulte:
-- README.md - Documentação geral
+- README.md - Documentaçêo geral
 - MAPA_ARQUIVOS.md - Estrutura do projeto
 - test_quick.py - Testes rápidos

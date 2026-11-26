@@ -309,7 +309,7 @@ def _build_segments(output, pause_threshold=0.3, max_words=15):
                 text = str(output[0])
         except Exception:
             text = str(output)
-        # Estimar duração (sem info de timestamp, usar 0-999)
+        # Estimar duraçêo (sem info de timestamp, usar 0-999)
         return [{"start": 0.0, "end": 999.0, "text": text.strip()}]
 
     segments = []

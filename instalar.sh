@@ -1,5 +1,5 @@
 #!/bin/bash
-# instalar.sh - Script de instalação do inemaVOX
+# instalar.sh - Script de instalaçêo do inemaVOX
 # Instala todas as dependências necessárias
 
 set -e
@@ -12,7 +12,7 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 echo -e "${BLUE}============================================${NC}"
-echo -e "${BLUE}  inemaVOX - Instalação de Dependências${NC}"
+echo -e "${BLUE}  inemaVOX - Instalaçêo de Dependências${NC}"
 echo -e "${BLUE}============================================${NC}"
 echo ""
 
@@ -52,7 +52,7 @@ fi
 if command -v rubberband &> /dev/null; then
     echo -e "${GREEN}  [OK] Rubberband instalado (opcional)${NC}"
 else
-    echo -e "${YELLOW}  [INFO] Rubberband não instalado (opcional)${NC}"
+    echo -e "${YELLOW}  [INFO] Rubberband nêo instalado (opcional)${NC}"
     echo -e "${YELLOW}         Para instalar: sudo apt install rubberband-cli${NC}"
 fi
 
@@ -67,7 +67,7 @@ if command -v python &> /dev/null; then
 elif command -v python3 &> /dev/null; then
     PYTHON_CMD="python3"
 else
-    echo -e "${RED}  [ERRO] Python não encontrado${NC}"
+    echo -e "${RED}  [ERRO] Python nêo encontrado${NC}"
     echo -e "${YELLOW}  Instale Python 3.10+ antes de continuar${NC}"
     exit 1
 fi
@@ -75,7 +75,7 @@ fi
 PYTHON_VERSION=$($PYTHON_CMD --version 2>&1 | cut -d' ' -f2)
 echo -e "${GREEN}  [OK] Python $PYTHON_VERSION${NC}"
 
-# Verificar versão mínima
+# Verificar versêo mínima
 PYTHON_MAJOR=$($PYTHON_CMD -c "import sys; print(sys.version_info.major)")
 PYTHON_MINOR=$($PYTHON_CMD -c "import sys; print(sys.version_info.minor)")
 
@@ -87,8 +87,8 @@ fi
 # Aviso sobre Python 3.13
 if [[ $PYTHON_MAJOR -eq 3 && $PYTHON_MINOR -ge 13 ]]; then
     echo -e "${YELLOW}  [AVISO] Python 3.13+ detectado${NC}"
-    echo -e "${YELLOW}          Coqui TTS não suporta esta versão${NC}"
-    echo -e "${YELLOW}          Use --tts bark (padrão)${NC}"
+    echo -e "${YELLOW}          Coqui TTS nêo suporta esta versêo${NC}"
+    echo -e "${YELLOW}          Use --tts bark (padrêo)${NC}"
 fi
 
 # ============================================
@@ -116,7 +116,7 @@ echo -e "${BLUE}  Instalando PyTorch...${NC}"
 if command -v nvidia-smi &> /dev/null && nvidia-smi &> /dev/null; then
     echo -e "${GREEN}  [GPU] NVIDIA detectada${NC}"
 
-    # Detectar versão CUDA
+    # Detectar versêo CUDA
     CUDA_VERSION=$(nvidia-smi | grep -oP "CUDA Version: \K[0-9]+\.[0-9]+" || echo "")
 
     if [[ ! -z "$CUDA_VERSION" ]]; then
@@ -132,15 +132,15 @@ if command -v nvidia-smi &> /dev/null && nvidia-smi &> /dev/null; then
             echo -e "${BLUE}  Instalando PyTorch com CUDA 11.8...${NC}"
             $PYTHON_CMD -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
         else
-            echo -e "${YELLOW}  [AVISO] CUDA $CUDA_VERSION pode não ser suportado${NC}"
+            echo -e "${YELLOW}  [AVISO] CUDA $CUDA_VERSION pode nêo ser suportado${NC}"
             $PYTHON_CMD -m pip install torch torchvision torchaudio
         fi
     else
-        # Instalar PyTorch padrão
+        # Instalar PyTorch padrêo
         $PYTHON_CMD -m pip install torch torchvision torchaudio
     fi
 else
-    echo -e "${YELLOW}  [CPU] GPU NVIDIA não detectada - instalando versão CPU${NC}"
+    echo -e "${YELLOW}  [CPU] GPU NVIDIA nêo detectada - instalando versêo CPU${NC}"
     $PYTHON_CMD -m pip install torch torchvision torchaudio
 fi
 
@@ -148,8 +148,8 @@ fi
 echo -e "${BLUE}  Instalando Transformers e Whisper...${NC}"
 $PYTHON_CMD -m pip install transformers faster-whisper
 
-# Dependências de tradução
-echo -e "${BLUE}  Instalando dependências de tradução...${NC}"
+# Dependências de traduçêo
+echo -e "${BLUE}  Instalando dependências de traduçêo...${NC}"
 $PYTHON_CMD -m pip install sentencepiece protobuf sacremoses
 
 # TTS - Bark
@@ -167,10 +167,10 @@ echo -e "${BLUE}  Instalando bibliotecas de áudio...${NC}"
 $PYTHON_CMD -m pip install librosa soundfile Pillow
 
 # ============================================
-# 5. Verificação final
+# 5. Verificaçêo final
 # ============================================
 echo ""
-echo -e "${YELLOW}[5/5] Verificando instalação...${NC}"
+echo -e "${YELLOW}[5/5] Verificando instalaçêo...${NC}"
 
 # Testar imports
 $PYTHON_CMD << 'EOF'
@@ -205,12 +205,12 @@ if torch.cuda.is_available():
     gpu_name = torch.cuda.get_device_name(0)
     print(f"  \033[92m[GPU]\033[0m {gpu_name}")
 else:
-    print(f"  \033[93m[CPU]\033[0m GPU não disponível")
+    print(f"  \033[93m[CPU]\033[0m GPU nêo disponível")
 
 if all_ok:
     print("")
     print("\033[92m============================================\033[0m")
-    print("\033[92m  INSTALAÇÃO CONCLUÍDA COM SUCESSO!\033[0m")
+    print("\033[92m  INSTALAÇêO CONCLUÍDA COM SUCESSO!\033[0m")
     print("\033[92m============================================\033[0m")
     print("")
     print("  Para usar:")

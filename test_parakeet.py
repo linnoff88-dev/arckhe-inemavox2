@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Teste isolado do Parakeet (NVIDIA NeMo) para transcrição.
+Teste isolado do Parakeet (NVIDIA NeMo) para transcriçêo.
 Compara com Whisper large-v3.
 
 Uso:
@@ -26,7 +26,7 @@ def extract_audio(video_path, output_wav):
 
 
 def transcribe_whisper(audio_path):
-    """Transcrição com Faster-Whisper large-v3"""
+    """Transcriçêo com Faster-Whisper large-v3"""
     print("\n" + "="*60)
     print("=== WHISPER LARGE-V3 ===")
     print("="*60)
@@ -69,7 +69,7 @@ def transcribe_whisper(audio_path):
 
 
 def transcribe_parakeet(audio_path):
-    """Transcrição com NVIDIA Parakeet"""
+    """Transcriçêo com NVIDIA Parakeet"""
     print("\n" + "="*60)
     print("=== NVIDIA PARAKEET ===")
     print("="*60)
@@ -82,7 +82,7 @@ def transcribe_parakeet(audio_path):
         # Modelo Parakeet - escolher um:
         # - nvidia/parakeet-ctc-1.1b (mais rápido)
         # - nvidia/parakeet-rnnt-1.1b (mais preciso)
-        # - nvidia/parakeet-tdt-1.1b (melhor pontuação)
+        # - nvidia/parakeet-tdt-1.1b (melhor pontuaçêo)
         model_name = "nvidia/parakeet-tdt-1.1b"
 
         print(f"[INFO] Carregando modelo: {model_name}")
@@ -169,7 +169,7 @@ def transcribe_parakeet(audio_path):
         return results, elapsed
 
     except ImportError:
-        print("[ERRO] NeMo não instalado. Instale com:")
+        print("[ERRO] NeMo nêo instalado. Instale com:")
         print("  pip install nemo_toolkit[asr]")
         return None, 0
     except Exception as e:
@@ -182,7 +182,7 @@ def transcribe_parakeet(audio_path):
 def compare_results(whisper_results, parakeet_results, whisper_time, parakeet_time):
     """Compara resultados"""
     print("\n" + "="*60)
-    print("=== COMPARAÇÃO ===")
+    print("=== COMPARAÇêO ===")
     print("="*60)
 
     if whisper_results and parakeet_results:
@@ -198,8 +198,8 @@ def compare_results(whisper_results, parakeet_results, whisper_time, parakeet_ti
         speedup = whisper_time / parakeet_time if parakeet_time > 0 else 0
         print(f"\n[INFO] Parakeet é {speedup:.1f}x mais rápido que Whisper")
 
-        # Salvar resultados para comparação manual
-        print("\n--- Comparação lado a lado (primeiros 5) ---")
+        # Salvar resultados para comparaçêo manual
+        print("\n--- Comparaçêo lado a lado (primeiros 5) ---")
         max_segs = min(5, len(whisper_results), len(parakeet_results))
         for i in range(max_segs):
             print(f"\nSegmento {i+1}:")
@@ -229,7 +229,7 @@ def main():
         audio_path = Path(args.audio)
 
     if not audio_path.exists():
-        print(f"[ERRO] Arquivo não encontrado: {audio_path}")
+        print(f"[ERRO] Arquivo nêo encontrado: {audio_path}")
         return
 
     print(f"\n[INFO] Áudio: {audio_path}")
