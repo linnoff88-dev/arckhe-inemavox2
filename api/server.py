@@ -1,4 +1,4 @@
-"""inemaVOX API - FastAPI server com WebSocket para progresso em tempo real."""
+"""ARCKHÉVOX API - FastAPI server com WebSocket para progresso em tempo real."""
 
 import json
 import os
@@ -34,9 +34,9 @@ async def lifespan(app: FastAPI):
 APP_VERSION = "1.11.1"
 
 app = FastAPI(
-    title="inemaVOX API",
+    title="ARCKHÉVOX API",
     version=APP_VERSION,
-    description="inemaVOX - Suite de voz com IA local: dublagem, transcricao, corte e download de videos",
+    description="ARCKHÉVOX - Suite de voz com IA local: dublagem, transcricao, corte e download de videos",
     lifespan=lifespan,
 )
 

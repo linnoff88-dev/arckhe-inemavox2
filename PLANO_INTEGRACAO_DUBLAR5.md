@@ -1,10 +1,10 @@
-# Plano de Integraçêo: Chatterbox TTS no inemavox
+# Plano de Integraçêo: Chatterbox TTS no ARCKHÉvox
 
 **Preparado em:** 2026-02-22
 **Sessêo de origem:** `~/projetos/chatterbox` (Claude Code)
-**Destino:** `~/projetos/inemavox/dublar_pro_v5.py`
+**Destino:** `~/projetos/ARCKHÉvox/dublar_pro_v5.py`
 
-> Este documento contém tudo que a próxima sessêo Claude Code (aberta em `~/projetos/inemavox`) precisa para implementar a integraçêo sem pesquisa adicional.
+> Este documento contém tudo que a próxima sessêo Claude Code (aberta em `~/projetos/ARCKHÉvox`) precisa para implementar a integraçêo sem pesquisa adicional.
 
 ---
 
@@ -26,19 +26,19 @@
 - Nome: `chatterbox`
 - Python: `/home/nmaldaner/miniconda3/envs/chatterbox/bin/python3`
 - Deps críticas: `torch==2.10.0+cu130`, `transformers==4.46.3`, `safetensors==0.5.3`, `diffusers==0.29.0`, `numpy<1.26`, `soundfile`
-- **Nêo** pode ser importado diretamente do venv do inemavox — deps incompatíveis
+- **Nêo** pode ser importado diretamente do venv do ARCKHÉvox — deps incompatíveis
 
 ---
 
 ## Problema Arquitetural
 
-O `dublar_pro_v5.py` roda no **venv do inemavox** (Python 3.12) ou container Docker. O Chatterbox só existe no **conda env `chatterbox`** (Python 3.11). Soluçêo: **subprocess + JSON**.
+O `dublar_pro_v5.py` roda no **venv do ARCKHÉvox** (Python 3.12) ou container Docker. O Chatterbox só existe no **conda env `chatterbox`** (Python 3.11). Soluçêo: **subprocess + JSON**.
 
 ---
 
 ## Arquivos a criar/modificar
 
-### Arquivo 1: CRIAR `inemavox/chatterbox_tts_worker.py`
+### Arquivo 1: CRIAR `ARCKHÉvox/chatterbox_tts_worker.py`
 
 Script standalone executado pelo Python do conda env `chatterbox`. Recebe args CLI, gera WAVs, salva resultado em JSON.
 
@@ -195,7 +195,7 @@ if __name__ == "__main__":
 
 ---
 
-### Arquivo 2: EDITAR `inemavox/dublar_pro_v5.py`
+### Arquivo 2: EDITAR `ARCKHÉvox/dublar_pro_v5.py`
 
 #### Mudança A — Nova funçêo `tts_chatterbox()` (inserir após linha 1890, antes do bloco `# ETAPA 6: TTS (EDGE - PADRAO v4)`)
 
@@ -349,7 +349,7 @@ Inserir **antes** de `elif args.tts == "edge":`:
 ## Teste após integraçêo
 
 ```bash
-cd ~/projetos/inemavox
+cd ~/projetos/ARCKHÉvox
 
 # Teste rápido sem clone (EN → PT com modelo multilingual)
 ./dublar-pro.sh --in doc/video_teste.mp4 --src en --tgt pt --tts chatterbox
@@ -365,10 +365,10 @@ export CHATTERBOX_PYTHON=/usr/bin/python3  # ou path do env no container
 
 ---
 
-## Notas para a sessêo no inemavox
+## Notas para a sessêo no ARCKHÉvox
 
 1. **Nêo alterar** a lógica de sync/fade/mux — SR 24000 já é suportado pelo rubberband
-2. **Nêo instalar** chatterbox no venv do inemavox — conflito certo com numpy/torch
+2. **Nêo instalar** chatterbox no venv do ARCKHÉvox — conflito certo com numpy/torch
 3. O worker roda **em processo separado** — VRAM do Chatterbox nêo interfere com outros modelos (M2M100, Whisper) desde que nêo rodem em paralelo
 4. Se Ollama + Chatterbox rodarem juntos, monitorar VRAM (128 GB é suficiente, mas modelo Multilingual usa ~8 GB)
 5. A variável `voice_sample` já existe no pipeline (linha 3015-3017) — `--clonar-voz` a popula automaticamente

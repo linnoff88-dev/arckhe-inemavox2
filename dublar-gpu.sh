@@ -1,11 +1,11 @@
 #!/bin/bash
-# dublar-gpu.sh - inemaVOX: Executa pipeline de dublagem com GPU via Docker
+# dublar-gpu.sh - ARCKHÉVOX: Executa pipeline de dublagem com GPU via Docker
 # Usa container NVIDIA PyTorch otimizado para GB10 Blackwell
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-IMAGE_NAME="inemavox:gpu"
+IMAGE_NAME="ARCKHÉvox:gpu"
 
 # Cores
 RED='\033[0;31m'
@@ -15,7 +15,7 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 echo -e "${BLUE}============================================${NC}"
-echo -e "${BLUE}  inemaVOX - Pipeline via Docker (GPU)${NC}"
+echo -e "${BLUE}  ARCKHÉVOX - Pipeline via Docker (GPU)${NC}"
 echo -e "${BLUE}============================================${NC}"
 
 # Verificar Docker

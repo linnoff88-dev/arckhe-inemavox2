@@ -121,7 +121,7 @@ def _groq_transcribe_file(audio_path: Path, model: str, src_lang: str | None, ap
     url = "https://api.groq.com/openai/v1/audio/transcriptions"
 
     # Multipart form data
-    boundary = f"----inemavox{int(time.time())}"
+    boundary = f"----ARCKHÉvox{int(time.time())}"
     body_parts = []
 
     # Campo: file
@@ -256,7 +256,7 @@ def transcribe_openai(audio_path: Path, model: str, src_lang: str | None) -> lis
     print(f"[transcription] Transcrevendo com OpenAI Whisper API ({model})...", flush=True)
 
     url = "https://api.openai.com/v1/audio/transcriptions"
-    boundary = f"----inemavox{int(time.time())}"
+    boundary = f"----ARCKHÉvox{int(time.time())}"
     body_parts = []
 
     content_type = "audio/wav"

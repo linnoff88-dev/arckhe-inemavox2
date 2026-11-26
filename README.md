@@ -1,4 +1,4 @@
-# inemaVOX 2
+# ARCKHÉVOX 2
 
 Suite de IA para videos: dublagem automatica, transcricao, corte de clips e download.
 
@@ -26,8 +26,8 @@ brew install ffmpeg python git
 ### 2. Clonar o projeto
 
 ```bash
-git clone https://github.com/inematds/inemavox2.git
-cd inemavox2
+git clone https://github.com/linnoff88-dev/ARCKHÉvox2.git
+cd ARCKHÉvox2
 ```
 
 ---

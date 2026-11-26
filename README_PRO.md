@@ -1,4 +1,4 @@
-# inemaVOX - Dublar Pro v3.0 (legado)
+# ARCKHÉVOX - Dublar Pro v3.0 (legado)
 
 Pipeline de voz profissional com todas as otimizações de qualidade.
 

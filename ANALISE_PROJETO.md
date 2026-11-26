@@ -1,8 +1,8 @@
-# Análise do Projeto inemaVOX (Dublar v4)
+# Análise do Projeto ARCKHÉVOX (Dublar v4)
 
 ## O que é o projeto?
 
-**inemaVOX** é uma **suite de voz com IA local** para processamento de vídeos. Dubla, transcreve, corta e baixa vídeos usando modelos rodando diretamente na GPU, sem dependência de APIs externas.
+**ARCKHÉVOX** é uma **suite de voz com IA local** para processamento de vídeos. Dubla, transcreve, corta e baixa vídeos usando modelos rodando diretamente na GPU, sem dependência de APIs externas.
 
 ---
 

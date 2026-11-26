@@ -1,4 +1,4 @@
-# inemaVOX - Dublar Pro v4.0 (legado)
+# ARCKHÉVOX - Dublar Pro v4.0 (legado)
 
 Suite de voz profissional — dublagem automatica de videos com IA.
 

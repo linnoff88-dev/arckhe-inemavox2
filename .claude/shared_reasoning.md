@@ -1,14 +1,14 @@
-# Shared Reasoning - Conselho inemaVOX
+# Shared Reasoning - Conselho ARCKHÉVOX
 
 ## Missao
-Analisar se o projeto inemaVOX vale a pena continuar — viabilidade, oportunidades e riscos.
+Analisar se o projeto ARCKHÉVOX vale a pena continuar — viabilidade, oportunidades e riscos.
 
 ## Fatos do Projeto (Base Factual Compartilhada)
 
 ### Stack Tecnica
 - Backend: FastAPI (Python)
 - Frontend: Next.js
-- Pipeline GPU: Docker com imagem `inemavox:gpu` (base NVIDIA PyTorch 25.01-py3)
+- Pipeline GPU: Docker com imagem `ARCKHÉvox:gpu` (base NVIDIA PyTorch 25.01-py3)
 - GPU: NVIDIA GB10 Blackwell (CUDA 12.8, driver 580.95)
 - ASR: Whisper large-v3 via CTranslate2 (inferencia acelerada)
 - TTS: Edge TTS, Bark, XTTS, Piper
@@ -55,11 +55,11 @@ Analisar se o projeto inemaVOX vale a pena continuar — viabilidade, oportunida
 
 ## ESTRATEGISTA OTIMISTA
 
-O projeto inemaVOX representa uma confluencia rara de timing de mercado, acesso a hardware de ponta e profundidade tecnica acumulada. O argumento otimista se constroi em tres camadas: o contexto de mercado, as alavancas tecnicas existentes e o caminho para monetizacao.
+O projeto ARCKHÉVOX representa uma confluencia rara de timing de mercado, acesso a hardware de ponta e profundidade tecnica acumulada. O argumento otimista se constroi em tres camadas: o contexto de mercado, as alavancas tecnicas existentes e o caminho para monetizacao.
 
 ### Timing de Mercado
 
-O mercado de criacao de conteudo multiidioma esta em expansao acelerada em 2026. Plataformas como YouTube, TikTok e Instagram remuneram criadores por visualizacoes em qualquer idioma, criando um incentivo economico direto para localizar conteudo. Agencias de conteudo, produtoras independentes e criadores individuais que hoje pagam entre USD 500-5000 por hora de video dublado profissionalmente sao o publico-alvo natural. inemaVOX entrega o mesmo resultado em minutos, rodando localmente, sem custo de API recorrente quando se usa modelos locais (M2M100, Ollama, Edge TTS).
+O mercado de criacao de conteudo multiidioma esta em expansao acelerada em 2026. Plataformas como YouTube, TikTok e Instagram remuneram criadores por visualizacoes em qualquer idioma, criando um incentivo economico direto para localizar conteudo. Agencias de conteudo, produtoras independentes e criadores individuais que hoje pagam entre USD 500-5000 por hora de video dublado profissionalmente sao o publico-alvo natural. ARCKHÉVOX entrega o mesmo resultado em minutos, rodando localmente, sem custo de API recorrente quando se usa modelos locais (M2M100, Ollama, Edge TTS).
 
 A funcionalidade de corte viral com LLM e particularmente estrategica. A analise automatica de momentos virais via Ollama, com transcricao Whisper, coloca o projeto num nicho de ferramentas de "clipping assistido por IA" que ainda nao tem player dominante no mercado de software pessoal/local.
 
@@ -94,7 +94,7 @@ No melhor cenario: o projeto evolui para um SaaS de nicho voltado a agencias de 
 
 ## ADVOGADO DO DIABO
 
-O projeto inemaVOX apresenta valor tecnico real, mas varios pressupostos criticos precisam ser questionados antes de qualquer decisao de continuar ou escalar.
+O projeto ARCKHÉVOX apresenta valor tecnico real, mas varios pressupostos criticos precisam ser questionados antes de qualquer decisao de continuar ou escalar.
 
 ### Qualidade de Saida: O Problema Central
 
@@ -106,7 +106,7 @@ A pergunta mais importante que o projeto nao responde explicitamente: qual e a t
 
 O projeto e otimizado para NVIDIA GB10 Blackwell — uma GPU de geracoes mais recentes com sm_120. Isso cria uma dependencia que tem dois lados negativos:
 1. Usuarios sem GPUs NVIDIA modernas enfrentam degradacao severa de performance (Whisper large-v3 em CPU leva 10-15x mais tempo).
-2. A imagem Docker `inemavox:gpu` com base `nvcr.io/nvidia/pytorch:25.01-py3` ja enfrentou problemas de incompatibilidade (PyTorch 2.6.0a0 alpha vs transformers). Atualizacoes de driver ou de imagem base podem quebrar o pipeline a qualquer momento.
+2. A imagem Docker `ARCKHÉvox:gpu` com base `nvcr.io/nvidia/pytorch:25.01-py3` ja enfrentou problemas de incompatibilidade (PyTorch 2.6.0a0 alpha vs transformers). Atualizacoes de driver ou de imagem base podem quebrar o pipeline a qualquer momento.
 
 Oferecer o projeto como SaaS exigiria manter uma frota de GPUs alugadas — custo operacional de USD 2-5/hora por instancia A100 equivalente. Com tempo medio de processamento de 15-30 minutos por video dublado, o custo marginal por video pode tornar o modelo de negocio inviavel a precos competitivos.
 
@@ -118,7 +118,7 @@ O mercado de dublagem automatica nao esta vazio. Concorrentes como ElevenLabs, H
 - Interface SaaS sem necessidade de GPU local
 - Times de decenas de engenheiros e dezenas de milhoes em funding
 
-inemaVOX nao tem lip sync. O campo TERMOS_PRESERVAR e CORRECOES_TRADUCAO sao solucoes artesanais para problemas que os concorrentes resolvem com modelos maiores e fine-tuning. A diferenciacao de "roda local, sem custo de API" so e relevante para um subconjunto pequeno de usuarios tecnicamente sofisticados.
+ARCKHÉVOX nao tem lip sync. O campo TERMOS_PRESERVAR e CORRECOES_TRADUCAO sao solucoes artesanais para problemas que os concorrentes resolvem com modelos maiores e fine-tuning. A diferenciacao de "roda local, sem custo de API" so e relevante para um subconjunto pequeno de usuarios tecnicamente sofisticados.
 
 ### Divida Tecnica e Complexidade
 
@@ -140,7 +140,7 @@ A analise neutra parte dos fatos observaveis e dos trade-offs mensuráveis, sem 
 
 ### O que o Projeto Efetivamente E
 
-inemaVOX e uma ferramenta de processamento de video por IA, de uso pessoal, tecnicamente madura para seu escopo declarado. A versao 5.3.1 com historico documentado de fixes criticos (race condition, checkpoint timing, CUDA detection) indica iteracao real baseada em uso, nao desenvolvimento teorico.
+ARCKHÉVOX e uma ferramenta de processamento de video por IA, de uso pessoal, tecnicamente madura para seu escopo declarado. A versao 5.3.1 com historico documentado de fixes criticos (race condition, checkpoint timing, CUDA detection) indica iteracao real baseada em uso, nao desenvolvimento teorico.
 
 O pipeline de dublagem (10 etapas, 3302 linhas) cobre o ciclo completo: download, transcricao, traducao, sintese de voz, mixagem e entrega. Isso e raro em projetos individuais — a maioria para na transcricao ou na traducao. A cobertura completa, mesmo imperfeita, tem valor funcional concreto.
 
@@ -157,7 +157,7 @@ O projeto tem profundidade real no pipeline de dublagem (o script mais antigo, m
 
 ### Comparacao com Alternativas Existentes
 
-| Criterio | inemaVOX | ElevenLabs/Rask | Solucao Manual |
+| Criterio | ARCKHÉVOX | ElevenLabs/Rask | Solucao Manual |
 |---|---|---|---|
 | Custo por video | Zero (hardware fixo) | USD 0.50-5.00 | USD 50-500 |
 | Qualidade de voz | Media (Edge TTS padrao) | Alta (clonagem de voz) | Alta |

@@ -1,5 +1,5 @@
 #!/bin/bash
-# instalar.sh - Script de instalaçêo do inemaVOX
+# instalar.sh - Script de instalaçêo do ARCKHÉVOX
 # Instala todas as dependências necessárias
 
 set -e
@@ -12,7 +12,7 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 echo -e "${BLUE}============================================${NC}"
-echo -e "${BLUE}  inemaVOX - Instalaçêo de Dependências${NC}"
+echo -e "${BLUE}  ARCKHÉVOX - Instalaçêo de Dependências${NC}"
 echo -e "${BLUE}============================================${NC}"
 echo ""
 
